@@ -1,0 +1,46 @@
+<f:layout name="General" />
+
+<f:section name="Main">
+    <h2>Quicklinks verwalten</h2>
+    <form id="quicklinks-form">
+        <ul>
+            <f:for each="{quicklinks}" as="quicklink">
+                <li>
+                    <label>
+                        <input type="checkbox" class="quicklink-checkbox" value="{quicklink.uid}" />
+                        {quicklink.title}
+                    </label>
+                </li>
+            </f:for>
+        </ul>
+    </form>
+</f:section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.quicklink-checkbox');
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', saveQuicklinksOrder);
+    });
+
+    function saveQuicklinksOrder() {
+        const selected = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value)
+            .join(',');
+        document.cookie = "quicklinks_order=" + selected + ";path=/";
+    }
+
+    // Optional: Vorbelegen der Checkboxen anhand des Cookies
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('quicklinks_order='));
+    if (cookie) {
+        const uids = cookie.split('=')[1].split(',');
+        checkboxes.forEach(cb => {
+            if (uids.includes(cb.value)) {
+                cb.checked = true;
+            }
+        });
+    }
+});
+</script>
+

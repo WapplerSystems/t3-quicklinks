@@ -26,17 +26,15 @@ return [
         'icon' => [
             'label' => 'Icon',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'trim',
+                'type' => 'file',
+                'allowed' => 'common-image-types',
             ],
         ],
         'link' => [
             'label' => 'Link',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'trim',
+                'type' => 'link',
+                'allowedTypes' => ['page', 'url', 'record'],
             ],
         ],
     ],

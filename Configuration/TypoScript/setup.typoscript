@@ -1,0 +1,27 @@
+plugin.tx_wsquicklinks {
+
+  view {
+    templateRootPaths {
+      0 = EXT:ws_quicklinks/Resources/Private/Templates/
+      1 = {$plugin.tx_wsquicklinks.view.templateRootPath}
+    }
+
+    partialRootPaths {
+      0 = EXT:ws_quicklinks/Resources/Private/Partials/
+      1 = {$plugin.tx_wsquicklinks.view.partialRootPath}
+    }
+
+    layoutRootPaths {
+      0 = EXT:ws_quicklinks/Resources/Private/Layouts/
+      1 = {$plugin.tx_wsquicklinks.view.layoutRootPath}
+    }
+
+  }
+
+
+  settings {
+
+    editPagePid = {$plugin.tx_wsquicklinks.settings.editPagePid}
+
+  }
+}
