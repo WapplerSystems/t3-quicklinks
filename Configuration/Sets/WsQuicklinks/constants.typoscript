@@ -13,8 +13,11 @@ plugin.tx_wsquicklinks {
   settings {
 
     # cat=plugin.tx_wsquicklinks/other/a; type=int; label=Page ID for the edit page
-    editPagePid =
+    editPageUid =
 
   }
 
 }
+
+
+

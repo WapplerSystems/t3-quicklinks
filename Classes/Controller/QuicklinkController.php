@@ -1,10 +1,10 @@
 <?php
 
-namespace Wapplersystems\Quicklinks\Controller;
+namespace Wapplersystems\WsQuicklinks\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use Wapplersystems\Quicklinks\Domain\Repository\QuicklinkRepository;
+use Wapplersystems\WsQuicklinks\Domain\Repository\QuicklinkRepository;
 
 class QuicklinkController extends ActionController
 {
@@ -15,10 +15,12 @@ class QuicklinkController extends ActionController
         $this->quicklinkRepository = $quicklinkRepository;
     }
 
-    public function listAction(): void
+    public function listAction(): ResponseInterface
     {
         $quicklinks = $this->quicklinkRepository->findAll();
         $this->view->assign('quicklinks', $quicklinks);
+
+        return $this->htmlResponse();
     }
 
 

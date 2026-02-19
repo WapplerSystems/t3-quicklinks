@@ -1,0 +1,14 @@
+<f:layout name="General" />
+
+<f:section name="Main">
+    <h2>Quicklinks Übersicht</h2>
+    <ul>
+        <f:for each="{quicklinks}" as="quicklink">
+            <f:render partial="Quicklink/ListItem" arguments="{quicklink: quicklink}" />
+        </f:for>
+    </ul>
+
+
+    <f:link.page pageUid="{settings.editPageUid}"><f:translate key="LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang.xlf:" /></f:link.page>
+
+</f:section>

@@ -4,7 +4,7 @@ services:
     autoconfigure: true
     public: false
 
-  Wapplersystems\Quicklinks\:
+  Wapplersystems\WsQuicklinks\:
     resource: '../Classes/*'
     exclude:
-    - '../Classes/Domain/Model/*'
+      - '../Classes/Domain/Model/*'

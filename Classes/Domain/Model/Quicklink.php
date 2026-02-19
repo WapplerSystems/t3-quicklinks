@@ -1,6 +1,6 @@
 <?php
 
-namespace Wapplersystems\Quicklinks\Domain\Model;
+namespace Wapplersystems\WsQuicklinks\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 

@@ -21,7 +21,7 @@ plugin.tx_wsquicklinks {
 
   settings {
 
-    editPagePid = {$plugin.tx_wsquicklinks.settings.editPagePid}
+    editPageUid = {$plugin.tx_wsquicklinks.settings.editPageUid}
 
   }
 }

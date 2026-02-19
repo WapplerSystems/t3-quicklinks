@@ -1,0 +1,11 @@
+<li>
+    <strong>{quicklink.title}</strong><br />
+    <span>UID: {quicklink.uid}</span>
+    <f:if condition="{quicklink.description}">
+        <div>{quicklink.description}</div>
+    </f:if>
+    <f:if condition="{quicklink.url}">
+        <a href="{quicklink.url}" target="_blank">Link</a>
+    </f:if>
+</li>
+
