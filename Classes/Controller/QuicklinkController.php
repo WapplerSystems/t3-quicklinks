@@ -38,8 +38,9 @@ class QuicklinkController extends ActionController
                 }
                 $quicklinks = $sortedQuicklinks;
             }
+            $this->view->assign('quicklinks', $quicklinks);
         }
-        $this->view->assign('quicklinks', $quicklinks);
+
 
         return $this->htmlResponse();
     }
