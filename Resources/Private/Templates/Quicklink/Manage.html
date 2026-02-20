@@ -29,7 +29,6 @@
                 .map(li => li.dataset.uid)
                 .filter(Boolean)
                 .join(',');
-            console.debug(order);
             document.cookie = "quicklinks_order=" + order + ";path=/";
         }
 
