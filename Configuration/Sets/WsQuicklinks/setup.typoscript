@@ -25,3 +25,7 @@ plugin.tx_wsquicklinks {
 
   }
 }
+
+page.includeCSS {
+  ws_quicklinks = EXT:ws_quicklinks/Resources/Public/CSS/styles.css
+}

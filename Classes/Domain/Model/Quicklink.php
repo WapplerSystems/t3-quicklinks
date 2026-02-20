@@ -2,13 +2,21 @@
 
 namespace Wapplersystems\WsQuicklinks\Domain\Model;
 
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 class Quicklink extends AbstractEntity
 {
     protected string $name = '';
-    protected string $icon = '';
     protected string $link = '';
+
+    /**
+     *
+     * @var ObjectStorage<FileReference>
+     */
+    protected ?ObjectStorage $icon = null;
 
     public function getName(): string
     {
@@ -20,16 +28,6 @@ class Quicklink extends AbstractEntity
         $this->name = $name;
     }
 
-    public function getIcon(): string
-    {
-        return $this->icon;
-    }
-
-    public function setIcon(string $icon): void
-    {
-        $this->icon = $icon;
-    }
-
     public function getLink(): string
     {
         return $this->link;
@@ -39,4 +37,16 @@ class Quicklink extends AbstractEntity
     {
         $this->link = $link;
     }
+
+    public function getIcon(): ?ObjectStorage
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?ObjectStorage $icon): void
+    {
+        $this->icon = $icon;
+    }
+
+
 }

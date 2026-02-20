@@ -1,11 +1,27 @@
-<li>
-    <strong>{quicklink.title}</strong><br />
-    <span>UID: {quicklink.uid}</span>
+<div class="ws-quicklink__item">
+
+    <f:if condition="{quicklink.link}">
+        <f:then>
+            <f:link.typolink parameter="{quicklink.link}">
+                <f:render section="Content" arguments="{_all}" />
+            </f:link.typolink>
+        </f:then>
+        <f:else>
+            <f:render section="Content" arguments="{_all}" />
+        </f:else>
+    </f:if>
+</div>
+
+
+<f:section name="Content">
+
+    <div class="ws-quicklink__name">{quicklink.name}</div>
+    <f:if condition="{quicklink.icon.0}">
+        <f:image image="{quicklink.icon.0}" alt="{quicklink.name}" />
+    </f:if>
     <f:if condition="{quicklink.description}">
         <div>{quicklink.description}</div>
     </f:if>
-    <f:if condition="{quicklink.url}">
-        <a href="{quicklink.url}" target="_blank">Link</a>
-    </f:if>
-</li>
+
+</f:section>
 

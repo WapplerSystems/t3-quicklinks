@@ -2,45 +2,71 @@
 
 <f:section name="Main">
     <h2>Quicklinks verwalten</h2>
-    <form id="quicklinks-form">
-        <ul>
-            <f:for each="{quicklinks}" as="quicklink">
-                <li>
-                    <label>
-                        <input type="checkbox" class="quicklink-checkbox" value="{quicklink.uid}" />
-                        {quicklink.title}
-                    </label>
-                </li>
-            </f:for>
-        </ul>
-    </form>
-</f:section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const checkboxes = document.querySelectorAll('.quicklink-checkbox');
-    checkboxes.forEach(cb => {
-        cb.addEventListener('change', saveQuicklinksOrder);
-    });
+    <h3>Ausgewählt</h3>
+    <ul id="ws-quicklinks-active" class="ws-quicklink ws-quicklink--drag-area">
 
-    function saveQuicklinksOrder() {
-        const selected = Array.from(checkboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.value)
-            .join(',');
-        document.cookie = "quicklinks_order=" + selected + ";path=/";
-    }
+    </ul>
 
-    // Optional: Vorbelegen der Checkboxen anhand des Cookies
-    const cookie = document.cookie.split('; ').find(row => row.startsWith('quicklinks_order='));
-    if (cookie) {
-        const uids = cookie.split('=')[1].split(',');
-        checkboxes.forEach(cb => {
-            if (uids.includes(cb.value)) {
-                cb.checked = true;
-            }
+    <h3>Verfügbar</h3>
+    <ul id="ws-quicklinks-available" class="ws-quicklink ws-quicklink--drag-area">
+        <f:for each="{quicklinks}" as="quicklink">
+            <li class="ws-quicklink__item" data-uid="{quicklink.uid}">
+                <f:render partial="Quicklink/ListItem" section="Content" arguments="{quicklink: quicklink}" />
+            </li>
+        </f:for>
+    </ul>
+
+    <f:asset.script identifier="Sortable" src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" />
+
+    <f:asset.script identifier="ws-quicklinks-manage" useNonce="true" inline="true">
+        document.addEventListener('DOMContentLoaded', function() {
+            const activeList = document.getElementById('ws-quicklinks-active');
+            const availableList = document.getElementById('ws-quicklinks-available');
+
+        function saveActiveOrder() {
+            const order = Array.from(activeList.children)
+                .map(li => li.dataset.uid)
+                .filter(Boolean)
+                .join(',');
+            console.debug(order);
+            document.cookie = "quicklinks_order=" + order + ";path=/";
+        }
+
+        // Initialisiere Sortable für aktive Liste (sortierbar und verschiebbar)
+        Sortable.create(activeList, {
+            group: 'quicklinks',
+            animation: 150,
+            onAdd: saveActiveOrder,
+            onUpdate: saveActiveOrder,
+            onRemove: saveActiveOrder,
+            onSort: saveActiveOrder
         });
-    }
-});
-</script>
 
+        // Initialisiere Sortable für verfügbare Liste (nur verschiebbar)
+        Sortable.create(availableList, {
+            group: 'quicklinks',
+            animation: 150,
+            onAdd: saveActiveOrder,
+            onRemove: saveActiveOrder
+        });
+
+        // Beim Laden: Reihenfolge aus Cookie wiederherstellen
+        const cookie = document.cookie.split('; ').find(row => row.startsWith('quicklinks_order='));
+        if (cookie) {
+            const uids = cookie.split('=')[1].split(',');
+            // Alle verfügbaren Items sammeln
+            const allItems = Array.from(availableList.querySelectorAll('.ws-quicklink__item'));
+            // Items in aktive Liste verschieben und sortieren
+            uids.forEach(uid => {
+                const item = allItems.find(li => li.dataset.uid === uid);
+                if (item) {
+                    activeList.appendChild(item);
+                }
+            });
+        }
+
+        // Checkbox-Logik entfernen, da Drag & Drop verwendet wird
+        });
+    </f:asset.script>
+</f:section>

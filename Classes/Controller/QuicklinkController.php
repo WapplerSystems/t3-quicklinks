@@ -18,6 +18,27 @@ class QuicklinkController extends ActionController
     public function listAction(): ResponseInterface
     {
         $quicklinks = $this->quicklinkRepository->findAll();
+
+        // Cookie quicklinks_order auslesen
+        $cookieValue = $_COOKIE['quicklinks_order'] ?? '';
+        if (!empty($cookieValue)) {
+            // IDs aus dem Cookie extrahieren (angenommen: Komma-getrennte Liste)
+            $orderedIds = array_filter(array_map('trim', explode(',', $cookieValue)));
+            if (!empty($orderedIds)) {
+                // Quicklinks nach IDs filtern und sortieren
+                $quicklinksById = [];
+                foreach ($quicklinks as $quicklink) {
+                    $quicklinksById[$quicklink->getUid()] = $quicklink;
+                }
+                $sortedQuicklinks = [];
+                foreach ($orderedIds as $id) {
+                    if (isset($quicklinksById[$id])) {
+                        $sortedQuicklinks[] = $quicklinksById[$id];
+                    }
+                }
+                $quicklinks = $sortedQuicklinks;
+            }
+        }
         $this->view->assign('quicklinks', $quicklinks);
 
         return $this->htmlResponse();
@@ -27,24 +48,6 @@ class QuicklinkController extends ActionController
     public function manageAction(): ResponseInterface
     {
         $quicklinks = $this->quicklinkRepository->findAll();
-        $cookieQuicklinks = $this->request->getCookieParams()['quicklinks_order'] ?? null;
-
-        if ($cookieQuicklinks) {
-            $orderedQuicklinks = [];
-            $order = explode(',', $cookieQuicklinks);
-
-            foreach ($order as $quicklinkId) {
-                foreach ($quicklinks as $quicklink) {
-                    if ($quicklink->getUid() === $quicklinkId) {
-                        $orderedQuicklinks[] = $quicklink;
-                        break;
-                    }
-                }
-            }
-
-            $quicklinks = $orderedQuicklinks;
-        }
-
         $this->view->assign('quicklinks', $quicklinks);
 
         return $this->htmlResponse();

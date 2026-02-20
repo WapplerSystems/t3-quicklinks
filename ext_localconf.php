@@ -10,7 +10,9 @@ ExtensionUtility::configurePlugin(
     [
         QuicklinkController::class => 'list',
     ],
-    [],
+    [
+        QuicklinkController::class => 'list',
+    ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
@@ -20,6 +22,8 @@ ExtensionUtility::configurePlugin(
     [
         QuicklinkController::class => 'manage',
     ],
-    [],
+    [
+        QuicklinkController::class => 'manage',
+    ],
     ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );

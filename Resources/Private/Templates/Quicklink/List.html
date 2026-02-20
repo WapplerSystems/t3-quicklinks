@@ -2,13 +2,15 @@
 
 <f:section name="Main">
     <h2>Quicklinks Übersicht</h2>
-    <ul>
+    <ul class="ws-quicklink">
         <f:for each="{quicklinks}" as="quicklink">
-            <f:render partial="Quicklink/ListItem" arguments="{quicklink: quicklink}" />
+            <li>
+                <f:render partial="Quicklink/ListItem" arguments="{quicklink: quicklink}" />
+            </li>
         </f:for>
     </ul>
 
 
-    <f:link.page pageUid="{settings.editPageUid}"><f:translate key="LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang.xlf:" /></f:link.page>
+    <f:link.page pageUid="{settings.editPageUid}"><f:translate key="LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang.xlf:btn.edit" /></f:link.page>
 
 </f:section>

@@ -9,6 +9,7 @@
 			</trans-unit>
 			<trans-unit id="btn.edit">
 				<source>Edit Quicklinks</source>
+				<target>Links bearbeiten</target>
 			</trans-unit>
 
 		</body>

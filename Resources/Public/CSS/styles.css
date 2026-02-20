@@ -1,0 +1,39 @@
+
+.ws-quicklink {
+    display: grid;
+    list-style: none;
+    margin: 0 0 2rem 0;
+    padding: 0;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.ws-quicklink--drag-area {
+    cursor: move;
+    background-color: #eee;
+    min-height: 8rem;
+    padding: 1rem;
+}
+
+.ws-quicklink__item {
+    padding: 1rem;
+    background-color: #99B9D9;
+    color: white;
+    text-align: center;
+}
+
+.ws-quicklink__item a {
+    background-color: #99B9D9;
+    color: white;
+    display: block;
+}
+.ws-quicklink__item a:hover {
+    background-color: #b8c5d8;
+}
+
+.ws-quicklink__name {
+    display: block;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+}
