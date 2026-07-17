@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages">
 		<header/>
 		<body>
 
@@ -10,6 +10,22 @@
 			<trans-unit id="btn.edit">
 				<source>Edit Quicklinks</source>
 				<target>Links bearbeiten</target>
+			</trans-unit>
+			<trans-unit id="list.header">
+				<source>Quicklinks overview</source>
+				<target>Quicklinks Übersicht</target>
+			</trans-unit>
+			<trans-unit id="manage.header">
+				<source>Manage quicklinks</source>
+				<target>Quicklinks verwalten</target>
+			</trans-unit>
+			<trans-unit id="manage.active">
+				<source>Selected</source>
+				<target>Ausgewählt</target>
+			</trans-unit>
+			<trans-unit id="manage.available">
+				<source>Available</source>
+				<target>Verfügbar</target>
 			</trans-unit>
 
 		</body>

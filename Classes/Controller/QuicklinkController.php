@@ -1,57 +1,79 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wapplersystems\WsQuicklinks\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use Wapplersystems\WsQuicklinks\Domain\Repository\QuicklinkRepository;
+use Wapplersystems\WsQuicklinks\Service\QuicklinkOrderService;
 
 class QuicklinkController extends ActionController
 {
-    protected QuicklinkRepository $quicklinkRepository;
-
-    public function __construct(QuicklinkRepository $quicklinkRepository)
-    {
-        $this->quicklinkRepository = $quicklinkRepository;
+    public function __construct(
+        protected readonly QuicklinkRepository $quicklinkRepository,
+        protected readonly QuicklinkOrderService $orderService,
+    ) {
     }
 
+    /**
+     * Frontend list: shows the visitor's chosen quicklinks in their stored order.
+     * Falls back to all quicklinks when nothing has been personalised yet.
+     */
     public function listAction(): ResponseInterface
     {
-        $quicklinks = $this->quicklinkRepository->findAll();
+        $allQuicklinks = $this->quicklinkRepository->findAll();
+        $order = $this->orderService->getOrder($this->request);
 
-        // Cookie quicklinks_order auslesen
-        $cookieValue = $_COOKIE['quicklinks_order'] ?? '';
-        if (!empty($cookieValue)) {
-            // IDs aus dem Cookie extrahieren (angenommen: Komma-getrennte Liste)
-            $orderedIds = array_filter(array_map('trim', explode(',', $cookieValue)));
-            if (!empty($orderedIds)) {
-                // Quicklinks nach IDs filtern und sortieren
-                $quicklinksById = [];
-                foreach ($quicklinks as $quicklink) {
-                    $quicklinksById[$quicklink->getUid()] = $quicklink;
-                }
-                $sortedQuicklinks = [];
-                foreach ($orderedIds as $id) {
-                    if (isset($quicklinksById[$id])) {
-                        $sortedQuicklinks[] = $quicklinksById[$id];
-                    }
-                }
-                $quicklinks = $sortedQuicklinks;
+        if ($order !== []) {
+            $byUid = [];
+            foreach ($allQuicklinks as $quicklink) {
+                $byUid[$quicklink->getUid()] = $quicklink;
             }
-            $this->view->assign('quicklinks', $quicklinks);
+
+            $quicklinks = [];
+            foreach ($order as $uid) {
+                if (isset($byUid[$uid])) {
+                    $quicklinks[] = $byUid[$uid];
+                }
+            }
+        } else {
+            $quicklinks = $allQuicklinks;
         }
 
-
-        return $this->htmlResponse();
-    }
-
-
-    public function manageAction(): ResponseInterface
-    {
-        $quicklinks = $this->quicklinkRepository->findAll();
         $this->view->assign('quicklinks', $quicklinks);
 
         return $this->htmlResponse();
     }
 
+    /**
+     * Manager: splits quicklinks into the active (chosen, ordered) and the
+     * remaining available ones so drag & drop starts from the stored state.
+     */
+    public function manageAction(): ResponseInterface
+    {
+        $allQuicklinks = $this->quicklinkRepository->findAll();
+        $order = $this->orderService->getOrder($this->request);
+
+        $byUid = [];
+        foreach ($allQuicklinks as $quicklink) {
+            $byUid[$quicklink->getUid()] = $quicklink;
+        }
+
+        $activeQuicklinks = [];
+        foreach ($order as $uid) {
+            if (isset($byUid[$uid])) {
+                $activeQuicklinks[] = $byUid[$uid];
+                unset($byUid[$uid]);
+            }
+        }
+
+        $this->view->assignMultiple([
+            'activeQuicklinks' => $activeQuicklinks,
+            'availableQuicklinks' => array_values($byUid),
+        ]);
+
+        return $this->htmlResponse();
+    }
 }

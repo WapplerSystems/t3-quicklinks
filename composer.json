@@ -1,6 +1,6 @@
 {
     "name": "wapplersystems/quicklinks",
-    "description": "",
+    "description": "Frontend quicklinks with a drag & drop manager, order stored per frontend user or in a cookie.",
     "type": "typo3-cms-extension",
     "license": "GPL-2.0-or-later",
     "authors": [

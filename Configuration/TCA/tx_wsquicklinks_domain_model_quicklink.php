@@ -2,7 +2,7 @@
 
 return [
     'ctrl' => [
-        'title' => 'Quicklink',
+        'title' => 'LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang_db.xlf:tx_wsquicklinks_domain_model_quicklink',
         'label' => 'name',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -12,11 +12,11 @@ return [
             'start' => 'starttime',
             'end' => 'endtime',
         ],
-        'iconfile' => 'EXT:ws_quicklinks/Resources/Public/Icons/quicklink.svg',
+        'iconfile' => 'EXT:ws_quicklinks/Resources/Public/Icons/Extension.svg',
     ],
     'columns' => [
         'name' => [
-            'label' => 'Name',
+            'label' => 'LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang_db.xlf:tx_wsquicklinks_domain_model_quicklink.name',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -24,14 +24,15 @@ return [
             ],
         ],
         'icon' => [
-            'label' => 'Icon',
+            'label' => 'LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang_db.xlf:tx_wsquicklinks_domain_model_quicklink.icon',
             'config' => [
                 'type' => 'file',
                 'allowed' => 'common-image-types',
+                'maxitems' => 1,
             ],
         ],
         'link' => [
-            'label' => 'Link',
+            'label' => 'LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang_db.xlf:tx_wsquicklinks_domain_model_quicklink.link',
             'config' => [
                 'type' => 'link',
                 'allowedTypes' => ['page', 'url', 'record'],

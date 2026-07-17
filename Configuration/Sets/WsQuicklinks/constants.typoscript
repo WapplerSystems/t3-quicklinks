@@ -10,9 +10,14 @@ plugin.tx_wsquicklinks {
     layoutRootPath = EXT:ws_quicklinks/Resources/Private/Layouts/
   }
 
+  persistence {
+    # cat=plugin.tx_wsquicklinks/other/a; type=int+; label=Storage folder holding the quicklink records
+    storagePid =
+  }
+
   settings {
 
-    # cat=plugin.tx_wsquicklinks/other/a; type=int; label=Page ID for the edit page
+    # cat=plugin.tx_wsquicklinks/other/b; type=int; label=Page ID for the edit page
     editPageUid =
 
   }

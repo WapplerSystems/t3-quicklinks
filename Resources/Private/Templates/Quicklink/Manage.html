@@ -1,71 +1,77 @@
 <f:layout name="General" />
 
 <f:section name="Main">
-    <h2>Quicklinks verwalten</h2>
+    <h2><f:translate key="LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang.xlf:manage.header" /></h2>
 
-    <h3>Ausgewählt</h3>
-    <ul id="ws-quicklinks-active" class="ws-quicklink ws-quicklink--drag-area">
+    <div class="ws-quicklinks-manage"
+         data-cookie-name="quicklinks_order">
 
-    </ul>
+        <h3><f:translate key="LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang.xlf:manage.active" /></h3>
+        <ul id="ws-quicklinks-active" class="ws-quicklink ws-quicklink--drag-area">
+            <f:for each="{activeQuicklinks}" as="quicklink">
+                <li class="ws-quicklink__item" data-uid="{quicklink.uid}">
+                    <f:render partial="Quicklink/ListItem" section="Content" arguments="{quicklink: quicklink}" />
+                </li>
+            </f:for>
+        </ul>
 
-    <h3>Verfügbar</h3>
-    <ul id="ws-quicklinks-available" class="ws-quicklink ws-quicklink--drag-area">
-        <f:for each="{quicklinks}" as="quicklink">
-            <li class="ws-quicklink__item" data-uid="{quicklink.uid}">
-                <f:render partial="Quicklink/ListItem" section="Content" arguments="{quicklink: quicklink}" />
-            </li>
-        </f:for>
-    </ul>
+        <h3><f:translate key="LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang.xlf:manage.available" /></h3>
+        <ul id="ws-quicklinks-available" class="ws-quicklink ws-quicklink--drag-area">
+            <f:for each="{availableQuicklinks}" as="quicklink">
+                <li class="ws-quicklink__item" data-uid="{quicklink.uid}">
+                    <f:render partial="Quicklink/ListItem" section="Content" arguments="{quicklink: quicklink}" />
+                </li>
+            </f:for>
+        </ul>
+    </div>
 
-    <f:asset.script identifier="Sortable" src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" />
+    <f:asset.script identifier="ws-quicklinks-sortable" src="EXT:ws_quicklinks/Resources/Public/JavaScript/Sortable.min.js" />
 
     <f:asset.script identifier="ws-quicklinks-manage" useNonce="true" inline="true">
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapper = document.querySelector('.ws-quicklinks-manage');
             const activeList = document.getElementById('ws-quicklinks-active');
             const availableList = document.getElementById('ws-quicklinks-available');
+            if (!wrapper || !activeList || !availableList) {
+                return;
+            }
 
-        function saveActiveOrder() {
-            const order = Array.from(activeList.children)
-                .map(li => li.dataset.uid)
-                .filter(Boolean)
-                .join(',');
-            document.cookie = "quicklinks_order=" + order + ";path=/";
-        }
+            const cookieName = wrapper.dataset.cookieName || 'quicklinks_order';
+            const saveUri = location.pathname + '?tx_wsquicklinks_save=1';
 
-        // Initialisiere Sortable für aktive Liste (sortierbar und verschiebbar)
-        Sortable.create(activeList, {
-            group: 'quicklinks',
-            animation: 150,
-            onAdd: saveActiveOrder,
-            onUpdate: saveActiveOrder,
-            onRemove: saveActiveOrder,
-            onSort: saveActiveOrder
-        });
+            function persistOrder() {
+                const order = Array.from(activeList.children)
+                    .map(li => li.dataset.uid)
+                    .filter(Boolean)
+                    .join(',');
 
-        // Initialisiere Sortable für verfügbare Liste (nur verschiebbar)
-        Sortable.create(availableList, {
-            group: 'quicklinks',
-            animation: 150,
-            onAdd: saveActiveOrder,
-            onRemove: saveActiveOrder
-        });
+                // Anonymous fallback: always keep the cookie in sync.
+                const secure = location.protocol === 'https:' ? '; Secure' : '';
+                document.cookie = cookieName + '=' + encodeURIComponent(order)
+                    + '; path=/; max-age=31536000; SameSite=Lax' + secure;
 
-        // Beim Laden: Reihenfolge aus Cookie wiederherstellen
-        const cookie = document.cookie.split('; ').find(row => row.startsWith('quicklinks_order='));
-        if (cookie) {
-            const uids = cookie.split('=')[1].split(',');
-            // Alle verfügbaren Items sammeln
-            const allItems = Array.from(availableList.querySelectorAll('.ws-quicklink__item'));
-            // Items in aktive Liste verschieben und sortieren
-            uids.forEach(uid => {
-                const item = allItems.find(li => li.dataset.uid === uid);
-                if (item) {
-                    activeList.appendChild(item);
-                }
+                // Logged-in users additionally get it stored server-side (fe_user record).
+                const params = new URLSearchParams();
+                params.append('order', order);
+                fetch(saveUri, {
+                    method: 'POST',
+                    headers: {'X-Requested-With': 'XMLHttpRequest'},
+                    credentials: 'same-origin',
+                    body: params
+                }).catch(() => { /* cookie fallback already applied */ });
+            }
+
+            Sortable.create(activeList, {
+                group: 'quicklinks',
+                animation: 150,
+                onSort: persistOrder
             });
-        }
 
-        // Checkbox-Logik entfernen, da Drag & Drop verwendet wird
+            Sortable.create(availableList, {
+                group: 'quicklinks',
+                animation: 150,
+                onSort: persistOrder
+            });
         });
     </f:asset.script>
 </f:section>

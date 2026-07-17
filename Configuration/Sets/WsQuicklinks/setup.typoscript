@@ -19,6 +19,10 @@ plugin.tx_wsquicklinks {
   }
 
 
+  persistence {
+    storagePid = {$plugin.tx_wsquicklinks.persistence.storagePid}
+  }
+
   settings {
 
     editPageUid = {$plugin.tx_wsquicklinks.settings.editPageUid}

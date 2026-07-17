@@ -10,6 +10,18 @@
 			<trans-unit id="btn.edit">
 				<source>Edit Quicklinks</source>
 			</trans-unit>
+			<trans-unit id="list.header">
+				<source>Quicklinks overview</source>
+			</trans-unit>
+			<trans-unit id="manage.header">
+				<source>Manage quicklinks</source>
+			</trans-unit>
+			<trans-unit id="manage.active">
+				<source>Selected</source>
+			</trans-unit>
+			<trans-unit id="manage.available">
+				<source>Available</source>
+			</trans-unit>
 
 		</body>
 	</file>

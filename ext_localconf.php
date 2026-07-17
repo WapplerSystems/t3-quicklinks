@@ -1,9 +1,12 @@
 <?php
 defined('TYPO3') or die();
 
-use \TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use Wapplersystems\WsQuicklinks\Controller\QuicklinkController;
 
+// The output is personalised per visitor (cookie / fe_user order), so every
+// action is registered as non-cacheable (USER_INT) – otherwise the first
+// visitor's order would be frozen into the page cache for everyone.
 ExtensionUtility::configurePlugin(
     'ws_quicklinks',
     'List',

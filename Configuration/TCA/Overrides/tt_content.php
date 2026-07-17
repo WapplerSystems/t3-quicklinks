@@ -9,13 +9,13 @@ defined('TYPO3') || die();
 ExtensionUtility::registerPlugin(
     'ws_quicklinks',
     'List',
-    'Quicklinks list',
+    'LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang_db.xlf:plugin.list.title',
     'content-plugin',
 );
 
 ExtensionUtility::registerPlugin(
     'ws_quicklinks',
     'Manage',
-    'Quicklinks manager',
+    'LLL:EXT:ws_quicklinks/Resources/Private/Language/locallang_db.xlf:plugin.manage.title',
     'content-plugin',
 );
